@@ -24,4 +24,20 @@ describe('<Header /> tests', () => {
 
     expect(logoutMock).toHaveBeenCalled();
   });
+
+  test('renders warning message because 1 vulnerable item', async () => {
+    factory('test', [null], jest.fn());
+
+    const warningMessage = await screen.queryByText('Items are vulnerable', { exact: false });
+
+    expect(warningMessage).not.toBeNull();
+  });
+
+  test('doesn\'t render warning messages no vulnerable items', async () => {
+    factory('test', [], jest.fn());
+
+    const warningMessage = await screen.queryByText('Items are vulnerable', { exact: false });
+
+    expect(warningMessage).toBeNull();
+  });
 });
