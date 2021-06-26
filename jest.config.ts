@@ -10,6 +10,12 @@ const config: Config.InitialOptions = {
       isolatedModules: true,
     },
   },
+  testPathIgnorePatterns: [
+    '<rootDir>/src/__tests__/mock-css.js',
+  ],
+  moduleNameMapper: {
+    '^.+\\.(css|scss)$': '<rootDir>/src/__tests__/mock-css.js',
+  },
 };
 
 export default config;
