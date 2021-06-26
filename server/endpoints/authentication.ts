@@ -7,7 +7,7 @@ const router = Router();
 
 // if password and email is correct returns new token
 router.get('/api/login',timeout, (req, res) => {
-  const {username, password} = req.query;
+  const { username, password } = req.query;
 
   const user = users.find((user) => (
     user.username === username &&
@@ -23,7 +23,7 @@ router.get('/api/login',timeout, (req, res) => {
       id: user.id,
       email: user.email,
       token,
-    })
+    });
 
     return;
   }
