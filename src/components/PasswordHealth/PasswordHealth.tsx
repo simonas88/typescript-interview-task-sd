@@ -5,11 +5,12 @@ import ErrorBlock from '../ErrorBlock';
 import Filter from './components/Filter/Filter';
 import LoadingScreen from '../LoadingScreen';
 import Header from './components/Header/Header';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import { Routes } from '~/constants';
 import itemHasWeakPassword from '~/utils/itemHasWeakPassword';
 import itemHasReusedPassword from '~/utils/itemHasReusedPassword';
 import { useUserContext } from '../UserContext';
+import { logout } from '~/services/authentication';
 
 const PasswordHealth: React.FC = () => {
   const {
@@ -18,11 +19,18 @@ const PasswordHealth: React.FC = () => {
     username,
   } = useUserContext();
 
+  const { push } = useHistory();
+
   const {
     items,
     isLoading,
     errorMessage,
   } = useItemsProvider();
+
+  const handleLogout = (): void => {
+    logout();
+    push(Routes.Login);
+  };
 
   if (isLoading || userDataIsLoading) {
     return <LoadingScreen/>;
@@ -34,7 +42,10 @@ const PasswordHealth: React.FC = () => {
 
   return (
     <div className="container">
-      <Header items={items} username={username} />
+      <Header
+        items={items}
+        username={username}
+        onLogout={handleLogout} />
       <Filter items={items}/>
       <Switch>
         <Route exact path={Routes.PasswordHealth}>

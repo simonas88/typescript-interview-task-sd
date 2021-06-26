@@ -1,7 +1,7 @@
 import React, { SyntheticEvent, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Routes } from '~/constants';
-import login from '~/services/login';
+import { login } from '~/services/authentication';
 import ErrorBlock from '../ErrorBlock';
 
 import './login-style.scss';
