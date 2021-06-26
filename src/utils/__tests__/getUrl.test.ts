@@ -14,17 +14,17 @@ describe('should convert api url and params to URI', () => {
       'http://localhost:9003/api/login?username=vardenis',
       API.Login,
       {
-        username: 'vardenis'
+        username: 'vardenis',
       },
     ],
     [
       'http://localhost:9003/api/login?id=1234',
       API.Login,
       {
-        id: 1234
+        id: 1234,
       },
     ],
   ])('should return %s', (expectedResult, api, params) => {
     expect(getUrl(api, params)).toBe(expectedResult);
   });
-})
+});

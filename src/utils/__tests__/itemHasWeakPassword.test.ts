@@ -8,6 +8,6 @@ describe('should return true if password do not match requirements', () => {
     ${false}       | ${'Password123~'} | ${'"Password123~" NOT to be a weak password'}
     ${true}        | ${'Password'}     | ${'"Password" to be a weak password'}
   `('should consider $description', ({ expectedResult, password }) => {
-    expect(itemHasWeakPassword({ password } as IItem)).toBe(expectedResult)
-  })
+    expect(itemHasWeakPassword({ password } as IItem)).toBe(expectedResult);
+  });
 });

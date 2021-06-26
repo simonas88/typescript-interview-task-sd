@@ -1,16 +1,17 @@
+import React from 'react';
 import List from './components/List/List';
 import useItemsProvider from './useItemsProvider';
 import ErrorBlock from '../ErrorBlock';
 import Filter from './components/Filter/Filter';
 import LoadingScreen from '../LoadingScreen';
 import Header from './components/Header/Header';
-import {Route, Switch} from "react-router-dom";
-import {Routes} from '~/constants';
-import itemHasWeakPassword from "~/utils/itemHasWeakPassword";
-import itemHasReusedPassword from "~/utils/itemHasReusedPassword";
+import { Route, Switch } from 'react-router-dom';
+import { Routes } from '~/constants';
+import itemHasWeakPassword from '~/utils/itemHasWeakPassword';
+import itemHasReusedPassword from '~/utils/itemHasReusedPassword';
 import { useUserContext } from '../UserContext';
 
-const PasswordHealth = () => {
+const PasswordHealth: React.FC = () => {
   const {
     errorMessage: userProviderErrorMessage,
     isLoading: userDataIsLoading,
@@ -24,11 +25,11 @@ const PasswordHealth = () => {
   } = useItemsProvider();
 
   if (isLoading || userDataIsLoading) {
-    return <LoadingScreen/>
+    return <LoadingScreen/>;
   }
 
   if (userProviderErrorMessage || errorMessage) {
-    return <ErrorBlock error={userProviderErrorMessage || errorMessage}/>
+    return <ErrorBlock error={userProviderErrorMessage || errorMessage}/>;
   }
 
   return (

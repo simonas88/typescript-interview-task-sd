@@ -1,7 +1,7 @@
-import {API} from '~/constants';
+import { API } from '~/constants';
 import getUrl from '../utils/getUrl';
 
-const login = async (username: string, password: string) => {
+const login = async (username: string, password: string): Promise<void> => {
   const url = getUrl(API.Login, {
     username,
     password,

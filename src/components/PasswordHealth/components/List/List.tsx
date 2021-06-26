@@ -1,5 +1,5 @@
-import {FC, useState} from 'react';
-import {IItem} from "~/services/getUserItems";
+import React, { FC, useState } from 'react';
+import { IItem } from '~/services/getUserItems';
 import ItemIcon from './components/ItemIcon';
 import updateItem from '../../../../services/updateItem';
 import Modal from 'react-modal';
@@ -41,13 +41,13 @@ const UpdateModal: FC<IUpdateModal> = ({ item }) => {
             await updateItem({
               ...item,
               password: newPass,
-            })
+            });
 
             window.location.reload();
           }}>Change</button>
           <button className="button ml-12px" onClick={() => {
             setNewPass('');
-            setShowModal(false)
+            setShowModal(false);
           }}>
             Cancel
           </button>
@@ -55,13 +55,15 @@ const UpdateModal: FC<IUpdateModal> = ({ item }) => {
       </Modal>
     </>
   );
-}
+};
 
-const List: FC<IList> = ({items}) => (
+const List: FC<IList> = ({ items }) => (
   <ul className="list">
     {
       items.map((item) => (
-        <li className="item">
+        <li
+          className="item"
+          key={item.title}>
           <ItemIcon title={item.title}/>
           <div>
             <div className="title">
@@ -76,6 +78,6 @@ const List: FC<IList> = ({items}) => (
       ))
     }
   </ul>
-)
+);
 
 export default List;

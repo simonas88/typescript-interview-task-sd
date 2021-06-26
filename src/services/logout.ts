@@ -1,4 +1,4 @@
-const logout = () => {
+const logout = (): void => void {
 
 };
 
