@@ -15,6 +15,7 @@ const config: Config.InitialOptions = {
   ],
   moduleNameMapper: {
     '^.+\\.(css|scss)$': '<rootDir>/src/__tests__/mock-css.js',
+    '~/(.*)': '<rootDir>/src/$1',
   },
 };
 
