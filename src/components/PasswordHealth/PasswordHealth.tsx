@@ -57,6 +57,7 @@ const PasswordHealth: React.FC = () => {
         username={username}
         onLogout={handleLogout} />
       <Filter
+        allItems={items.length}
         weakItems={weakPasswords.length}
         reusedItems={reusedPasswords.length}
         oldItems={oldPasswords.length} />

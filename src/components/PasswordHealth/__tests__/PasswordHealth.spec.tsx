@@ -55,14 +55,17 @@ describe('<PasswordHealth /> tests', () => {
       items: [
         { password: '123', createdAt: new Date('2019-01-01').toISOString() },
         { password: '123', createdAt: new Date('2019-01-01').toISOString() },
+        { password: 'Proper123!', createdAt: new Date('2019-01-30').toISOString() },
       ],
     });
 
     await factory();
+    const allTab = screen.getByText('All', { exact: false });
     const weakTab = screen.getByText('Weak', { exact: false });
     const reusedTab = screen.getByText('Reused', { exact: false });
     const oldTab = screen.getByText('Old', { exact: false });
 
+    expect(allTab.textContent).toMatch('All (3)');
     expect(weakTab.textContent).toMatch('Weak (2)');
     expect(reusedTab.textContent).toMatch('Reused (2)');
     expect(oldTab.textContent).toMatch('Old (2)');
