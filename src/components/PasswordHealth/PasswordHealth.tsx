@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import List from './components/List/List';
 import useItemsProvider from './useItemsProvider';
 import ErrorBlock from '../ErrorBlock';
@@ -11,6 +11,7 @@ import itemHasWeakPassword from '~/utils/itemHasWeakPassword';
 import itemHasReusedPassword from '~/utils/itemHasReusedPassword';
 import { useUserContext } from '../UserContext';
 import { logout } from '~/services/authentication';
+import itemHasOldPassword from '~/utils/itemHasOldPassword';
 
 const PasswordHealth: React.FC = () => {
   const {
@@ -27,6 +28,8 @@ const PasswordHealth: React.FC = () => {
     errorMessage,
   } = useItemsProvider();
 
+  const reusedPassFilter = useCallback((item) => itemHasReusedPassword(item, items), [items]);
+
   const handleLogout = (): void => {
     logout();
     push(Routes.Login);
@@ -40,6 +43,11 @@ const PasswordHealth: React.FC = () => {
     return <ErrorBlock error={userProviderErrorMessage || errorMessage}/>;
   }
 
+  const reusedPasswords = items.filter(reusedPassFilter);
+  const weakPasswords = items.filter(itemHasWeakPassword);
+  const oldPasswords = items.filter(itemHasOldPassword);
+  const vulnerablePasswordCount = reusedPasswords.length + weakPasswords.length + oldPasswords.length;
+
   return (
     <div className="container">
       <Header
@@ -52,10 +60,13 @@ const PasswordHealth: React.FC = () => {
           <List items={items}/>
         </Route>
         <Route path={Routes.Weak}>
-          <List items={items.filter(itemHasWeakPassword)}/>
+          <List items={weakPasswords}/>
         </Route>
         <Route path={Routes.Reused}>
-          <List items={items.filter((item) => itemHasReusedPassword(item, items))}/>
+          <List items={reusedPasswords}/>
+        </Route>
+        <Route path={Routes.Old}>
+          <List items={oldPasswords}/>
         </Route>
       </Switch>
     </div>

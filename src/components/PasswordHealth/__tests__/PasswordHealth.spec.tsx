@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, act, RenderResult } from '@testing-library/react';
+import { render, act, screen, RenderResult } from '@testing-library/react';
 
 import { MemoryRouter } from 'react-router-dom';
 
@@ -31,14 +31,42 @@ const factory = async (): Promise<RenderResult> => {
 };
 
 describe('<PasswordHealth /> tests', () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+    mockUserContext.mockReturnValue({});
+  });
+
   test('renders', async () => {
     mockItemsProvider.mockReturnValue({ items: [] });
-    mockUserContext.mockReturnValue({});
 
     const { container } = await factory();
 
     const rootElement = container.querySelector('.container');
 
     expect(rootElement).not.toBeNull();
+  });
+
+  test('renders routes correctly', async () => {
+    jest
+    .spyOn(global.Date, 'now')
+    .mockImplementationOnce(() =>
+      new Date('2019-01-31').valueOf(),
+    );
+
+    mockItemsProvider.mockReturnValue({
+      items: [
+        { password: '123', createdAt: new Date('2019-01-01').toISOString() },
+        { password: '123', createdAt: new Date('2019-01-01').toISOString() },
+      ],
+    });
+
+    await factory();
+    const weakTab = screen.getByText('Weak', { exact: false });
+    const reusedTab = screen.getByText('Reused', { exact: false });
+    const oldTab = screen.getByText('Old', { exact: false });
+
+    expect(weakTab.textContent).toMatch('Weak (2)');
+    expect(reusedTab.textContent).toMatch('Reused (2)');
+    expect(oldTab.textContent).toMatch('Old (2)');
   });
 });
