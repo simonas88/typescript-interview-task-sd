@@ -32,6 +32,7 @@ const PasswordForm: React.FC<PasswordProps> = ({ onConfirm, onCancel }) => {
         className="password-form"
         onSubmit={handleConfirm}>
         <input
+          autoFocus
           placeholder="new password"
           className="input"
           value={newPass}
