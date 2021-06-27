@@ -20,7 +20,18 @@ const UpdateModal: FC<IUpdateModal> = ({ item, onUpdate }) => {
   const [showModal, openModal, closeModal] = useModal(false);
   const [newPass, setNewPass] = useState('');
   
-  const handleUpdate = useCallback(() => onUpdate({ ...item, password: newPass }), [item, newPass]);
+  const handleUpdate = useCallback(
+    () => {
+      onUpdate({ ...item, password: newPass });
+      closeModal();
+    },
+    [item, newPass],
+  );
+
+  const handleCancel = useCallback(() => {
+    setNewPass('');
+    closeModal();
+  }, []);
 
   return (
     <>
@@ -42,10 +53,7 @@ const UpdateModal: FC<IUpdateModal> = ({ item, onUpdate }) => {
         />
         <div className="pt-12px text-center">
           <button className="button" onClick={handleUpdate}>Change</button>
-          <button className="button ml-12px" onClick={() => {
-            setNewPass('');
-            closeModal();
-          }}>
+          <button className="button ml-12px" onClick={handleCancel}>
             Cancel
           </button>
         </div>
