@@ -48,10 +48,8 @@ describe('<PasswordHealth /> tests', () => {
 
   test('renders routes correctly', async () => {
     jest
-    .spyOn(global.Date, 'now')
-    .mockImplementationOnce(() =>
-      new Date('2019-01-31').valueOf(),
-    );
+      .spyOn(global.Date, 'now')
+      .mockImplementation(() => new Date('2019-02-01').valueOf());
 
     mockItemsProvider.mockReturnValue({
       items: [

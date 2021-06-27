@@ -54,7 +54,10 @@ const PasswordHealth: React.FC = () => {
         items={items}
         username={username}
         onLogout={handleLogout} />
-      <Filter items={items}/>
+      <Filter
+        weakItems={weakPasswords.length}
+        reusedItems={reusedPasswords.length}
+        oldItems={oldPasswords.length} />
       <Switch>
         <Route exact path={Routes.PasswordHealth}>
           <List items={items}/>
