@@ -1,17 +1,19 @@
-import React, { SyntheticEvent, useState } from 'react';
+import React, {
+  ChangeEventHandler,
+  SyntheticEvent,
+  useCallback,
+  useState,
+} from 'react';
 import { useHistory } from 'react-router-dom';
-import { Routes } from '~/constants';
-import { login } from '~/services/authentication';
+
+import Button from './components/Button';
 import ErrorBlock from '../ErrorBlock';
 import LoadingScreen from '../LoadingScreen';
 
-import './login-style.scss';
+import { Routes } from '~/constants';
+import { login } from '~/services/authentication';
 
-const Button: React.FC = () => (
-  <button type="submit" className="button mt-24px">
-    Login
-  </button>
-);
+import './login-style.scss';
 
 const Login: React.FC = () => {
   const { push } = useHistory();
@@ -19,6 +21,9 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>();
+
+  const handleUsernameChange = useCallback<ChangeEventHandler<HTMLInputElement>>(event => setUsername(event.target.value), []);
+  const handlePasswordChange = useCallback<ChangeEventHandler<HTMLInputElement>>(event => setPassword(event.target.value), []);
 
   const handleSubmit = async (event: SyntheticEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
@@ -43,20 +48,19 @@ const Login: React.FC = () => {
         </h1>
         <input
           value={username}
-          onChange={(event) => setUsername(event.target.value)}
+          onChange={handleUsernameChange}
           placeholder="Username"
           type="text"
-          className="input mt-52px"
-        />
+          className="input mt-52px" />
         <input
           value={password}
-          onChange={(event) => setPassword(event.target.value)}
+          onChange={handlePasswordChange}
           placeholder="Password"
           type="password"
-          className="input mt-24px"
-        />
+          className="input mt-24px" />
         <ErrorBlock error={errorMessage}/>
-        {isLoading ? <LoadingScreen /> : <Button />}
+        <Button disabled={isLoading}>Login</Button>
+        {isLoading ? <LoadingScreen /> : null}
       </form>
     </div>
   );
