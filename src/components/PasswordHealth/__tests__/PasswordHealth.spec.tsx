@@ -6,7 +6,7 @@ import { MemoryRouter } from 'react-router-dom';
 const mockItemsProvider = jest.fn();
 const mockUserContext = jest.fn();
 
-jest.mock('../useItemsProvider', () => ({
+jest.mock('../userItemsProvider', () => ({
   __esModule: true,
   default: mockItemsProvider,
 }));
