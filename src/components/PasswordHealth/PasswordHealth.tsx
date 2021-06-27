@@ -46,12 +46,13 @@ const PasswordHealth: React.FC = () => {
   const reusedPasswords = items.filter(reusedPassFilter);
   const weakPasswords = items.filter(itemHasWeakPassword);
   const oldPasswords = items.filter(itemHasOldPassword);
+
   const vulnerablePasswordCount = reusedPasswords.length + weakPasswords.length + oldPasswords.length;
 
   return (
     <div className="container">
       <Header
-        items={items}
+        vulnerableItems={vulnerablePasswordCount}
         username={username}
         onLogout={handleLogout} />
       <Filter
