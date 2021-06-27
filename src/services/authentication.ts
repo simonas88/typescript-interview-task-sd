@@ -13,9 +13,13 @@ export const login = async (username: string, password: string): Promise<void> =
   const data = await response.json();
   const { token } = data;
 
-  localStorage.setItem(TOKEN_KEY, token);
+  sessionStorage.setItem(TOKEN_KEY, token);
 };
 
 export const logout = (): void => {
-  localStorage.removeItem(TOKEN_KEY);
+  sessionStorage.removeItem(TOKEN_KEY);
 };
+
+export const getToken = (): string | null => sessionStorage.getItem(TOKEN_KEY);
+
+export const isLoggedIn = (): boolean => getToken() !== null;

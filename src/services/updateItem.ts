@@ -1,5 +1,6 @@
 import { API } from '~/constants';
 import getUrl from '~/utils/getUrl';
+import { getToken } from './authentication';
 import { IItem } from './getUserItems';
 
 const updateItem = (item: IItem): Promise<Response> => (
@@ -8,7 +9,7 @@ const updateItem = (item: IItem): Promise<Response> => (
     body: JSON.stringify(item),
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   })
 );

@@ -5,6 +5,7 @@ import React, {
   useState,
 } from 'react';
 import { API } from '~/constants';
+import { getToken } from '~/services/authentication';
 import getUrl from '~/utils/getUrl';
 
 type UserContextProviderProps = {
@@ -47,7 +48,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps): JSX
     try {
       const response = await fetch(getUrl(API.User), {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${getToken()}`,
         },
       });
 
