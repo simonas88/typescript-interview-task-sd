@@ -32,7 +32,7 @@ router.get('/api/login',timeout, (req, res) => {
 });
 
 // deletes token
-router.get('/api/logout', (req, res) => {
+router.post('/api/logout', (req, res) => {
   const token = req.headers.authorization?.split(' ')?.[1];
 
   if (token) {
