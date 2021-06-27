@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import FilterTab from './components/FilterTab';
 
@@ -20,8 +20,13 @@ const Filter: React.FC<IFilter> = ({
   reusedItems,
   oldItems,
 }) => {
+  const { push } = useHistory();
   const currentRoute = useLocation();
   const isActiveRoute = useCallback((route: Routes) => currentRoute.pathname === route, [currentRoute]);
+  const openAll = useCallback(() => push(Routes.PasswordHealth), []);
+  const openWeak = useCallback(() => push(Routes.Weak), []);
+  const openReused = useCallback(() => push(Routes.Reused), []);
+  const openOld = useCallback(() => push(Routes.Old), []);
 
   return (
     <div className="filter">
@@ -29,22 +34,22 @@ const Filter: React.FC<IFilter> = ({
         title="All"
         count={allItems}
         active={isActiveRoute(Routes.PasswordHealth)}
-        path={Routes.PasswordHealth}/>
+        onClick={openAll} />
       <FilterTab
         title="Weak"
         count={weakItems}
         active={isActiveRoute(Routes.Weak)}
-        path={Routes.Weak}/>
+        onClick={openWeak} />
       <FilterTab
         title="Reused"
         count={reusedItems}
         active={isActiveRoute(Routes.Reused)}
-        path={Routes.Reused}/>
+        onClick={openReused} />
       <FilterTab
         title="Old"
         count={oldItems}
         active={isActiveRoute(Routes.Old)}
-        path={Routes.Old}/>
+        onClick={openOld} />
     </div>
   );
 };

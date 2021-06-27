@@ -1,26 +1,23 @@
-import React, { FC } from 'react';
-import { useHistory } from 'react-router-dom';
+import React from 'react';
 
 interface IFilterTab {
   title: string;
   count: number;
-  path: string;
+  onClick: () => void;
   active?: boolean;
 }
 
-const FilterTab: FC<IFilterTab> = ({
+const FilterTab: React.FC<IFilterTab> = ({
   title,
   count,
-  path,
+  onClick,
   active,
-}) => {
-  const { push } = useHistory();
-
-  return (
-    <div className={`filter-tab${active ? ' filter-tab--active' : ''}`} onClick={() => push(path)}>
-      {`${title} (${count})`}
-    </div>
-  );
-};
+}) => (
+  <div
+    className={`filter-tab${active ? ' filter-tab--active' : ''}`}
+    onClick={onClick}>
+    {`${title} (${count})`}
+  </div>
+);
 
 export default FilterTab;
