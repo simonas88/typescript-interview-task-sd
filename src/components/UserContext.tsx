@@ -4,9 +4,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { API } from '~/constants';
-import { getToken } from '~/services/authentication';
-import getUrl from '~/utils/getUrl';
+import { getUserData } from '~/services/getUserData';
 
 type UserContextProviderProps = {
   children: JSX.Element
@@ -46,13 +44,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps): JSX
     setIsLoading(true);
 
     try {
-      const response = await fetch(getUrl(API.User), {
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-        },
-      });
-
-      const data = await response.json();
+      const data = await getUserData();
 
       setUsername(data?.username);
       setEmail(data?.email);
