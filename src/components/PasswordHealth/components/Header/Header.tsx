@@ -8,8 +8,7 @@ interface IHeader {
 }
 
 const Header: FC<IHeader> = ({ vulnerableItems, username, onLogout }) => (
-  /* TODO: change to semantic HTML5 */
-  <div className="header">
+  <div className={`header${vulnerableItems > 0 ? ' header--warning' : ''}`}>
     <div className="user-section">
       <button onClick={onLogout}>{`Logout ${username}`}</button>
     </div>
