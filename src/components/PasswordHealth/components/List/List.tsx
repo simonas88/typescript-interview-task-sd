@@ -1,10 +1,11 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback } from 'react';
 import { IItem } from '~/services/getUserItems';
 import ItemIcon from './components/ItemIcon';
 import useModal from './useModal';
 
 import './list-style.scss';
 import Modal from '~/components/Modal';
+import PasswordForm from '../PasswordForm/PasswordForm';
 
 interface IList {
   items: Array<IItem>;
@@ -18,20 +19,14 @@ interface IUpdateModal {
 
 const UpdateModal: FC<IUpdateModal> = ({ item, onUpdate }) => {
   const [showModal, openModal, closeModal] = useModal(false);
-  const [newPass, setNewPass] = useState('');
   
   const handleUpdate = useCallback(
-    () => {
-      onUpdate({ ...item, password: newPass });
+    (password: string) => {
+      onUpdate({ ...item, password });
       closeModal();
     },
-    [item, newPass],
+    [item],
   );
-
-  const handleCancel = useCallback(() => {
-    setNewPass('');
-    closeModal();
-  }, []);
 
   return (
     <>
@@ -44,19 +39,9 @@ const UpdateModal: FC<IUpdateModal> = ({ item, onUpdate }) => {
         onRequestClose={closeModal}
         contentLabel="Example Modal"
       >
-        <h1>Update Password</h1>
-        <input
-          placeholder="new password"
-          className="input"
-          value={newPass}
-          onChange={(event) => setNewPass(event.target.value)} 
-        />
-        <div className="pt-12px text-center">
-          <button className="button" onClick={handleUpdate}>Change</button>
-          <button className="button ml-12px" onClick={handleCancel}>
-            Cancel
-          </button>
-        </div>
+        <PasswordForm
+          onConfirm={handleUpdate}
+          onCancel={closeModal} />
       </Modal>
     </>
   );
