@@ -12,6 +12,8 @@ import itemHasReusedPassword from '~/utils/itemHasReusedPassword';
 import { useUserContext } from '../UserContext';
 import { logout } from '~/services/authentication';
 import itemHasOldPassword from '~/utils/itemHasOldPassword';
+import { IItem } from '~/services/getUserItems';
+import updateItem from '~/services/updateItem';
 
 const PasswordHealth: React.FC = () => {
   const {
@@ -29,6 +31,12 @@ const PasswordHealth: React.FC = () => {
   } = useItemsProvider();
 
   const reusedPassFilter = useCallback((item) => itemHasReusedPassword(item, items), [items]);
+
+  const handlePasswordUpdate = useCallback(async (item: IItem) => {
+    await updateItem(item);
+
+    window.location.reload();
+  }, []);
 
   const handleLogout = (): void => {
     logout();
@@ -61,16 +69,16 @@ const PasswordHealth: React.FC = () => {
         oldItems={oldPasswords.length} />
       <Switch>
         <Route exact path={Routes.PasswordHealth}>
-          <List items={items}/>
+          <List items={items} onUpdate={handlePasswordUpdate} />
         </Route>
         <Route path={Routes.Weak}>
-          <List items={weakPasswords}/>
+          <List items={weakPasswords} onUpdate={handlePasswordUpdate} />
         </Route>
         <Route path={Routes.Reused}>
-          <List items={reusedPasswords}/>
+          <List items={reusedPasswords} onUpdate={handlePasswordUpdate} />
         </Route>
         <Route path={Routes.Old}>
-          <List items={oldPasswords}/>
+          <List items={oldPasswords} onUpdate={handlePasswordUpdate} />
         </Route>
       </Switch>
     </div>

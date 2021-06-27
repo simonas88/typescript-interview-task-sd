@@ -1,22 +1,25 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { IItem } from '~/services/getUserItems';
 import ItemIcon from './components/ItemIcon';
-import updateItem from '../../../../services/updateItem';
 import Modal from 'react-modal';
 
 import './list-style.scss';
 
 interface IList {
-  items: Array<IItem>,
+  items: Array<IItem>;
+  onUpdate: (item: IItem) => void;
 }
 
 interface IUpdateModal {
   item: IItem;
+  onUpdate: (item: IItem) => void;
 }
 
-const UpdateModal: FC<IUpdateModal> = ({ item }) => {
+const UpdateModal: FC<IUpdateModal> = ({ item, onUpdate }) => {
   const [showModal, setShowModal] = useState(false);
   const [newPass, setNewPass] = useState('');
+  
+  const handleUpdate = useCallback(() => onUpdate({ ...item, password: newPass }), [item, newPass]);
 
   return (
     <>
@@ -37,14 +40,7 @@ const UpdateModal: FC<IUpdateModal> = ({ item }) => {
           onChange={(event) => setNewPass(event.target.value)} 
         />
         <div className="pt-12px text-center">
-          <button className="button" onClick={async () => {
-            await updateItem({
-              ...item,
-              password: newPass,
-            });
-
-            window.location.reload();
-          }}>Change</button>
+          <button className="button" onClick={handleUpdate}>Change</button>
           <button className="button ml-12px" onClick={() => {
             setNewPass('');
             setShowModal(false);
@@ -57,7 +53,7 @@ const UpdateModal: FC<IUpdateModal> = ({ item }) => {
   );
 };
 
-const List: FC<IList> = ({ items }) => (
+const List: FC<IList> = ({ items, onUpdate }) => (
   <ul className="list">
     {
       items.map((item) => (
@@ -73,7 +69,7 @@ const List: FC<IList> = ({ items }) => (
               {item.description}
             </div>
           </div>
-          <UpdateModal item={item} />
+          <UpdateModal item={item} onUpdate={onUpdate} />
         </li>
       ))
     }
