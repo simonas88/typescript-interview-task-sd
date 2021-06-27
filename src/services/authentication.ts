@@ -10,6 +10,11 @@ export const login = async (username: string, password: string): Promise<void> =
   });
 
   const response = await fetch(url);
+
+  if (response.status === 401) {
+    throw new Error('Incorrect username or password!');
+  }
+
   const data = await response.json();
   const { token } = data;
 
