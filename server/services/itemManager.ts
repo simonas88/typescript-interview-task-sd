@@ -1,21 +1,11 @@
 import { passwords } from '../data';
 import { Password } from '../types';
 
-const items: Password[] = [];
+const items: Password[] = [...passwords];
 
 export const updateItem = (item: Password): void => {
-  items.push(item);
+  const index = items.findIndex(({ id }) => id === item.id);
+  items.splice(index, 1, item);
 };
 
-export const getItems = (): Password[] => {
-  return passwords.map((passwordItem) => {
-    const updatedItem = items.find(({ id }) => id === passwordItem.id);
-
-    return {
-      ...(updatedItem || passwordItem),
-    };
-  });
-};
-
-
-
+export const getItems = (): Password[] => items;

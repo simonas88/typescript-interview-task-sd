@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import getUserItems, { IItem } from '~/services/getUserItems';
+import updateItemApi from '~/services/updateItem';
 
 type UserItems = {
   isLoading: boolean;
   errorMessage: string;
   items: IItem[];
+  updateItem: (input: IItem) => void;
 }
 
 const userItemsProvider = (): UserItems => {
@@ -28,10 +30,18 @@ const userItemsProvider = (): UserItems => {
     })();
   }, []);
 
+  const updateItem = useCallback(
+    (item: IItem) => void updateItemApi(item)
+      .then(() => getUserItems())
+      .then(setItems),
+    [],
+  );
+
   return {
     isLoading,
     errorMessage,
     items,
+    updateItem,
   };
 };
 
