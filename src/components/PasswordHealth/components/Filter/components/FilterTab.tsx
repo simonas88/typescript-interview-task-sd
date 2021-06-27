@@ -5,17 +5,19 @@ interface IFilterTab {
   title: string;
   count: number;
   path: string;
+  active?: boolean;
 }
 
 const FilterTab: FC<IFilterTab> = ({
   title,
   count,
   path,
+  active,
 }) => {
   const { push } = useHistory();
 
   return (
-    <div className="filter-tab" onClick={() => push(path)}>
+    <div className={`filter-tab${active ? ' filter-tab--active' : ''}`} onClick={() => push(path)}>
       {`${title} (${count})`}
     </div>
   );
