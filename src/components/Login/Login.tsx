@@ -32,11 +32,10 @@ const Login: React.FC = () => {
 
     try {
       await login(username, password);
+      setIsLoading(false);
       push(Routes.PasswordHealth);
     } catch (error) {
       setErrorMessage(error.message);
-    } finally {
-      setIsLoading(false);
     }
   };
 

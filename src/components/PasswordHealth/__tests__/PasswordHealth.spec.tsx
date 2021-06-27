@@ -15,6 +15,8 @@ jest.mock('../../UserContext', () => ({
   useUserContext: mockUserContext,
 }));
 
+jest.mock('../../Modal', jest.fn());
+
 import PasswordHealth from '../PasswordHealth'; // has to be imported AFTER jest.mock due to hoisting issues
 
 

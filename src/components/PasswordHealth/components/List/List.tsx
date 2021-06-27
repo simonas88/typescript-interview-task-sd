@@ -1,10 +1,10 @@
 import React, { FC, useCallback, useState } from 'react';
 import { IItem } from '~/services/getUserItems';
 import ItemIcon from './components/ItemIcon';
-import Modal from 'react-modal';
 import useModal from './useModal';
 
 import './list-style.scss';
+import Modal from '~/components/Modal';
 
 interface IList {
   items: Array<IItem>;
