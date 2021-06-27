@@ -3,17 +3,26 @@ import { useHistory } from 'react-router-dom';
 import { Routes } from '~/constants';
 import { login } from '~/services/authentication';
 import ErrorBlock from '../ErrorBlock';
+import LoadingScreen from '../LoadingScreen';
 
 import './login-style.scss';
+
+const Button: React.FC = () => (
+  <button type="submit" className="button mt-24px">
+    Login
+  </button>
+);
 
 const Login: React.FC = () => {
   const { push } = useHistory();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>();
 
   const handleSubmit = async (event: SyntheticEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
+    setIsLoading(true);
     setErrorMessage(null);
 
     try {
@@ -21,6 +30,8 @@ const Login: React.FC = () => {
       push(Routes.PasswordHealth);
     } catch (error) {
       setErrorMessage(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -45,9 +56,7 @@ const Login: React.FC = () => {
           className="input mt-24px"
         />
         <ErrorBlock error={errorMessage}/>
-        <button type="submit" className="button mt-24px">
-          Login
-        </button>
+        {isLoading ? <LoadingScreen /> : <Button />}
       </form>
     </div>
   );
