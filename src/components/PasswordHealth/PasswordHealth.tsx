@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import List from './components/List/List';
 import useItemsProvider from './userItemsProvider';
 import ErrorBlock from '../ErrorBlock';
@@ -8,10 +8,11 @@ import Header from './components/Header/Header';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { Routes } from '~/constants';
 import itemHasWeakPassword from '~/utils/itemHasWeakPassword';
-import itemHasReusedPassword from '~/utils/itemHasReusedPassword';
 import { useUserContext } from '../UserContext';
 import { logout } from '~/services/authentication';
 import itemHasOldPassword from '~/utils/itemHasOldPassword';
+import getRepeatValues from '~/utils/getRepeatValues';
+import { IItem } from '~/services/getUserItems';
 
 const PasswordHealth: React.FC = () => {
   const {
@@ -29,12 +30,19 @@ const PasswordHealth: React.FC = () => {
     updateItem,
   } = useItemsProvider();
 
-  const reusedPassFilter = useCallback((item) => itemHasReusedPassword(item, items), [items]);
+  const reusedPasswordSet = useMemo(() => getRepeatValues(items, i => i.password), [items]);
+  const reusedPassFilter = useCallback((item: IItem) => reusedPasswordSet.has(item.password), [items]);
 
-  const handleLogout = async (): Promise<void> => {
+  const reusedPasswords = useMemo(() => items.filter(reusedPassFilter), [items]);
+  const weakPasswords = useMemo(() => items.filter(itemHasWeakPassword), [items]);
+  const oldPasswords = useMemo(() => items.filter(itemHasOldPassword), [items]);
+
+  const vulnerablePasswordCount = reusedPasswords.length + weakPasswords.length + oldPasswords.length;
+
+  const handleLogout = useCallback(async (): Promise<void> => {
     await logout();
     push(Routes.Login);
-  };
+  }, []);
 
   if (isLoading || userDataIsLoading) {
     return <LoadingScreen/>;
@@ -43,12 +51,6 @@ const PasswordHealth: React.FC = () => {
   if (userProviderErrorMessage || errorMessage) {
     return <ErrorBlock error={userProviderErrorMessage || errorMessage}/>;
   }
-
-  const reusedPasswords = items.filter(reusedPassFilter);
-  const weakPasswords = items.filter(itemHasWeakPassword);
-  const oldPasswords = items.filter(itemHasOldPassword);
-
-  const vulnerablePasswordCount = reusedPasswords.length + weakPasswords.length + oldPasswords.length;
 
   return (
     <div className="container">
