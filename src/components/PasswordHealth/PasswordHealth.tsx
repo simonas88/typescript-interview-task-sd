@@ -9,7 +9,7 @@ import LoadingScreen from '../LoadingScreen';
 import useItemsProvider from './userItemsProvider';
 import { UserContextProvider, useUserContext } from '../UserContext';
 import { logout } from '~/services/authentication';
-import { IItem } from '~/services/getUserItems';
+import { Item } from '~/types';
 import { Routes } from '~/constants';
 import itemHasWeakPassword from '~/utils/itemHasWeakPassword';
 import itemHasOldPassword from '~/utils/itemHasOldPassword';
@@ -32,7 +32,7 @@ const PasswordHealth: React.FC = () => {
   } = useItemsProvider();
 
   const reusedPasswordSet = useMemo(() => getRepeatValues(items, i => i.password), [items]);
-  const reusedPassFilter = useCallback((item: IItem) => reusedPasswordSet.has(item.password), [items]);
+  const reusedPassFilter = useCallback((item: Item) => reusedPasswordSet.has(item.password), [items]);
 
   const reusedPasswords = useMemo(() => items.filter(reusedPassFilter), [items]);
   const weakPasswords = useMemo(() => items.filter(itemHasWeakPassword), [items]);

@@ -4,7 +4,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { getUserData } from '~/services/getUserData';
+import getUserData from '~/services/getUserData';
 
 type UserContextProviderProps = {
   children: JSX.Element

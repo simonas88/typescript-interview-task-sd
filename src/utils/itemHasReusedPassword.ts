@@ -1,7 +1,7 @@
-import { IItem } from '~/services/getUserItems';
+import { Item } from '~/types';
 import getRepeatValues from './getRepeatValues';
 
-const itemHasReusedPassword = (item: IItem, itemList: Array<IItem>): boolean => {
+const itemHasReusedPassword = (item: Item, itemList: Array<Item>): boolean => {
   const repeatedPasswords = getRepeatValues(itemList, item => item.password);
   return repeatedPasswords.has(item.password);
 };

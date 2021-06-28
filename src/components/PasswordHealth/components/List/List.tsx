@@ -1,20 +1,20 @@
 import React, { FC, useCallback } from 'react';
-import { IItem } from '~/services/getUserItems';
+import Modal from '~/components/Modal';
 import ItemIcon from './components/ItemIcon';
+import PasswordForm from '../PasswordForm/PasswordForm';
 import useModal from './useModal';
+import { Item } from '~/types';
 
 import './list-style.scss';
-import Modal from '~/components/Modal';
-import PasswordForm from '../PasswordForm/PasswordForm';
 
 interface IList {
-  items: Array<IItem>;
-  onUpdate: (item: IItem) => void;
+  items: Array<Item>;
+  onUpdate: (item: Item) => void;
 }
 
 interface IUpdateModal {
-  item: IItem;
-  onUpdate: (item: IItem) => void;
+  item: Item;
+  onUpdate: (item: Item) => void;
 }
 
 const UpdateModal: FC<IUpdateModal> = ({ item, onUpdate }) => {

@@ -1,18 +1,19 @@
 import { useCallback, useEffect, useState } from 'react';
-import getUserItems, { IItem } from '~/services/getUserItems';
+import getUserItems from '~/services/getUserItems';
 import updateItemApi from '~/services/updateItem';
+import { Item } from '~/types';
 
 type UserItems = {
   isLoading: boolean;
   errorMessage: string;
-  items: IItem[];
-  updateItem: (input: IItem) => void;
+  items: Item[];
+  updateItem: (input: Item) => void;
 }
 
 const userItemsProvider = (): UserItems => {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string>();
-  const [items, setItems] = useState<Array<IItem>>([]);
+  const [items, setItems] = useState<Array<Item>>([]);
 
   useEffect(() => {
     (async () => {
@@ -31,7 +32,7 @@ const userItemsProvider = (): UserItems => {
   }, []);
 
   const updateItem = useCallback(
-    (item: IItem) => void updateItemApi(item)
+    (item: Item) => void updateItemApi(item)
       .then(() => getUserItems())
       .then(setItems),
     [],

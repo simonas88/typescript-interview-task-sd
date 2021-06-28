@@ -1,6 +1,4 @@
-import { IItem } from '~/services/getUserItems';
-
-type Predicate<T> = (input: T) => boolean;
+import { Item, Predicate } from '~/types';
 
 const STRENGTH_THRESHOLD = 2;
 
@@ -11,7 +9,7 @@ const getPasswordStrength = (password: string): number => [
   password.match(/[0-9]/) != null,
 ].filter(Boolean).length;
 
-const itemHasWeakPassword: Predicate<IItem> = ({ password }) =>
+const itemHasWeakPassword: Predicate<Item> = ({ password }) =>
   getPasswordStrength(password) <= STRENGTH_THRESHOLD;
 
 export default itemHasWeakPassword;

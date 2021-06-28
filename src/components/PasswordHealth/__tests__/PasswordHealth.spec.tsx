@@ -2,7 +2,7 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import getUserItems from '~/services/getUserItems';
-import { getUserData } from '~/services/getUserData';
+import getUserData from '~/services/getUserData';
 import { render, act, screen, RenderResult, waitFor } from '@testing-library/react';
 
 import PasswordHealth from '../PasswordHealth';
@@ -13,7 +13,8 @@ jest.mock('~/services/getUserItems', () => ({
 }));
 
 jest.mock('~/services/getUserData', () => ({
-  getUserData: jest.fn(),
+  __esModule: true,
+  default: jest.fn(),
 }));
 
 jest.mock('../../Modal', jest.fn());

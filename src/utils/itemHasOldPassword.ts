@@ -1,13 +1,11 @@
 import parseDate from 'date-fns/parseISO';
 import addDays from 'date-fns/addDays';
 import isPast from 'date-fns/isPast';
-import { IItem } from '~/services/getUserItems';
-
-type Predicate<T> = (input: T) => boolean;
+import { Item, Predicate } from '~/types';
 
 const AGE_THRESHOLD = 30; // days
 
-const itemHasOldPassword: Predicate<IItem> = ({ createdAt }) => {
+const itemHasOldPassword: Predicate<Item> = ({ createdAt }) => {
   const plus30 = addDays(parseDate(createdAt), AGE_THRESHOLD);
 
   return isPast(plus30);
