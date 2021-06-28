@@ -1,16 +1,13 @@
 import { API } from '~/constants';
 import getUrl from '~/utils/getUrl';
-import { getToken } from './tokenStore';
 import { IItem } from './getUserItems';
+import authorizedFetch from './authorizedFetch';
 
 const updateItem = async (item: IItem): Promise<void> => {
-  fetch(getUrl(API.Items), {
+  authorizedFetch(getUrl(API.Items), {
     method: 'POST',
     body: JSON.stringify(item),
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${getToken()}`,
-    },
+    headers: { 'Content-Type': 'application/json' },
   });
 };
 

@@ -31,8 +31,8 @@ const PasswordHealth: React.FC = () => {
 
   const reusedPassFilter = useCallback((item) => itemHasReusedPassword(item, items), [items]);
 
-  const handleLogout = (): void => {
-    logout();
+  const handleLogout = async (): Promise<void> => {
+    await logout();
     push(Routes.Login);
   };
 

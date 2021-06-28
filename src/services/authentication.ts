@@ -1,4 +1,4 @@
-import { API } from '~/constants';
+import { API, Routes } from '~/constants';
 import getUrl from '~/utils/getUrl';
 
 import { getToken, removeToken, saveToken, tokenExists } from './tokenStore';
@@ -23,11 +23,16 @@ export const login = async (username: string, password: string): Promise<void> =
 };
 
 export const logout = async (): Promise<void> => {
-  fetch(getUrl(API.Logout), {
+  await fetch(getUrl(API.Logout), {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
   });
   removeToken();
+};
+
+export const logoutAndReload = async (): Promise<void> => {
+  await logout();
+  window.location.assign(Routes.Login);
 };

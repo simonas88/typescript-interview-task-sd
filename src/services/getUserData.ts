@@ -1,6 +1,6 @@
 import { API } from '~/constants';
 import getUrl from '~/utils/getUrl';
-import { getToken } from './tokenStore';
+import authorizedFetch from './authorizedFetch';
 
 type UserData = {
   id: string;
@@ -9,11 +9,7 @@ type UserData = {
 }
 
 export const getUserData = async (): Promise<UserData> => {
-  const response = await fetch(getUrl(API.User), {
-    headers: {
-      Authorization: `Bearer ${getToken()}`,
-    },
-  });
+  const response = await authorizedFetch(getUrl(API.User));
 
   const { id, username, email } = await response.json();
   
