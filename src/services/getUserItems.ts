@@ -1,6 +1,6 @@
 import { API } from '~/constants';
 import getUrl from '~/utils/getUrl';
-import { getToken } from './authentication';
+import { getToken } from './tokenStore';
 
 export interface IItem {
   title: string,
@@ -9,10 +9,8 @@ export interface IItem {
   createdAt: string,
 }
 
-const getUserItems = async (userId?: string): Promise<Array<IItem>> => {
-  const url = getUrl(API.Items, {
-    userId,
-  });
+const getUserItems = async (): Promise<Array<IItem>> => {
+  const url = getUrl(API.Items);
 
   const response = await fetch(url, {
     headers: {

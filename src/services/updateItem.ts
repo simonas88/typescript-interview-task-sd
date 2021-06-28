@@ -1,9 +1,9 @@
 import { API } from '~/constants';
 import getUrl from '~/utils/getUrl';
-import { getToken } from './authentication';
+import { getToken } from './tokenStore';
 import { IItem } from './getUserItems';
 
-const updateItem = (item: IItem): Promise<Response> => (
+const updateItem = async (item: IItem): Promise<void> => {
   fetch(getUrl(API.Items), {
     method: 'POST',
     body: JSON.stringify(item),
@@ -11,7 +11,7 @@ const updateItem = (item: IItem): Promise<Response> => (
       'Content-Type': 'application/json',
       Authorization: `Bearer ${getToken()}`,
     },
-  })
-);
+  });
+};
 
 export default updateItem;

@@ -1,6 +1,6 @@
 import { API } from '~/constants';
 import getUrl from '~/utils/getUrl';
-import { getToken } from './authentication';
+import { getToken } from './tokenStore';
 
 type UserData = {
   id: string;
