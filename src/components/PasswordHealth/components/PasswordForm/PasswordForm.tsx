@@ -1,22 +1,25 @@
-import React, { useCallback, useState } from 'react';
+import React, { FormEventHandler, useCallback, useState } from 'react';
 import ErrorBlock from '~/components/ErrorBlock';
 import { IItem } from '~/services/getUserItems';
 import itemHasWeakPassword from '~/utils/itemHasWeakPassword';
 
 import './password-form-style.scss';
 
-type PasswordProps = {
+type PasswordFormProps = {
   onConfirm: (password: string) => void;
   onCancel: () => void;
 }
 
-const PasswordForm: React.FC<PasswordProps> = ({ onConfirm, onCancel }) => {
+const PasswordForm: React.FC<PasswordFormProps> = ({ onConfirm, onCancel }) => {
   const [newPass, setNewPass] = useState('');
 
   const passwordTooWeak = itemHasWeakPassword({ password: newPass } as IItem);
   
-  const handleConfirm = useCallback(
-    () => void onConfirm(newPass),
+  const handleConfirm = useCallback<FormEventHandler<HTMLFormElement>>(
+    event => {
+      event.preventDefault();
+      onConfirm(newPass);
+    },
     [newPass],
   );
 
