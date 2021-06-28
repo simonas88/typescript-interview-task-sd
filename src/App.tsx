@@ -6,7 +6,6 @@ import PasswordHealth from './components/PasswordHealth/PasswordHealth';
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
 import { Routes } from './constants';
-import { UserContextProvider } from './components/UserContext';
 
 import './style/styles.scss';
 
@@ -19,7 +18,7 @@ const App = (): JSX.Element => (
       />
       <PrivateRoute
         path={Routes.PasswordHealth}
-        component={() => <UserContextProvider><PasswordHealth /></UserContextProvider>}
+        component={PasswordHealth}
       />
       <PrivateRoute
         path={Routes.Root}

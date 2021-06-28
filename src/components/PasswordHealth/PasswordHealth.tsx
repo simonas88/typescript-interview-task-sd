@@ -1,18 +1,19 @@
 import React, { useCallback, useMemo } from 'react';
-import List from './components/List/List';
-import useItemsProvider from './userItemsProvider';
-import ErrorBlock from '../ErrorBlock';
-import Filter from './components/Filter/Filter';
-import LoadingScreen from '../LoadingScreen';
-import Header from './components/Header/Header';
 import { Route, Switch, useHistory } from 'react-router-dom';
+
+import List from './components/List/List';
+import Filter from './components/Filter/Filter';
+import Header from './components/Header/Header';
+import ErrorBlock from '../ErrorBlock';
+import LoadingScreen from '../LoadingScreen';
+import useItemsProvider from './userItemsProvider';
+import { UserContextProvider, useUserContext } from '../UserContext';
+import { logout } from '~/services/authentication';
+import { IItem } from '~/services/getUserItems';
 import { Routes } from '~/constants';
 import itemHasWeakPassword from '~/utils/itemHasWeakPassword';
-import { useUserContext } from '../UserContext';
-import { logout } from '~/services/authentication';
 import itemHasOldPassword from '~/utils/itemHasOldPassword';
 import getRepeatValues from '~/utils/getRepeatValues';
-import { IItem } from '~/services/getUserItems';
 
 const PasswordHealth: React.FC = () => {
   const {
@@ -81,4 +82,10 @@ const PasswordHealth: React.FC = () => {
   );
 };
 
-export default PasswordHealth;
+const PasswordHealthWithContext: React.FC = () => (
+  <UserContextProvider>
+    <PasswordHealth />
+  </UserContextProvider>
+);
+
+export default PasswordHealthWithContext;

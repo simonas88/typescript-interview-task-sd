@@ -1,24 +1,22 @@
 import React from 'react';
-import { render, act, screen, RenderResult } from '@testing-library/react';
-
 import { MemoryRouter } from 'react-router-dom';
 
-const mockItemsProvider = jest.fn();
-const mockUserContext = jest.fn();
+import getUserItems from '~/services/getUserItems';
+import { getUserData } from '~/services/getUserData';
+import { render, act, screen, RenderResult, waitFor } from '@testing-library/react';
 
-jest.mock('../userItemsProvider', () => ({
+import PasswordHealth from '../PasswordHealth';
+
+jest.mock('~/services/getUserItems', () => ({
   __esModule: true,
-  default: mockItemsProvider,
+  default: jest.fn(),
 }));
 
-jest.mock('../../UserContext', () => ({
-  useUserContext: mockUserContext,
+jest.mock('~/services/getUserData', () => ({
+  getUserData: jest.fn(),
 }));
 
 jest.mock('../../Modal', jest.fn());
-
-import PasswordHealth from '../PasswordHealth'; // has to be imported AFTER jest.mock due to hoisting issues
-
 
 const factory = async (): Promise<RenderResult> => {
   let wrapper;
@@ -32,20 +30,48 @@ const factory = async (): Promise<RenderResult> => {
   return wrapper;
 };
 
+const mockUserData = { id: '1', username: 'test', email: 'test@mail.com' };
+
+const waitUntilLoaded = (): Promise<void> =>
+  waitFor(async () => expect(await screen.queryByText('Loading', { exact: false })).toBeNull());
+
 describe('<PasswordHealth /> tests', () => {
   beforeEach(() => {
     jest.resetAllMocks();
-    mockUserContext.mockReturnValue({});
   });
 
   test('renders', async () => {
-    mockItemsProvider.mockReturnValue({ items: [] });
+    (getUserData as jest.Mock).mockReturnValue(Promise.resolve(mockUserData));
+    (getUserItems as jest.Mock).mockReturnValue(Promise.resolve([]));
 
     const { container } = await factory();
+
+    await waitUntilLoaded();
 
     const rootElement = container.querySelector('.container');
 
     expect(rootElement).not.toBeNull();
+  });
+
+  test('renders loading screen', async () => {
+    (getUserData as jest.Mock).mockReturnValue(Promise.resolve(mockUserData));
+    (getUserItems as jest.Mock).mockReturnValue(Promise.resolve([]));
+
+    factory();
+
+    const loader = screen.getByText('Loading', { exact: false });
+    expect(loader).not.toBeNull();
+  });
+
+  test('renders error message', async () => {
+    (getUserData as jest.Mock).mockReturnValue(Promise.resolve(mockUserData));
+    (getUserItems as jest.Mock).mockRejectedValue({ message: 'test error' });
+
+    await factory();
+    await waitUntilLoaded();
+
+    const loader = screen.getByText('test error');
+    expect(loader).not.toBeNull();
   });
 
   test('renders routes correctly', async () => {
@@ -53,15 +79,16 @@ describe('<PasswordHealth /> tests', () => {
       .spyOn(global.Date, 'now')
       .mockImplementation(() => new Date('2019-02-01').valueOf());
 
-    mockItemsProvider.mockReturnValue({
-      items: [
-        { password: '123', createdAt: new Date('2019-01-01').toISOString() },
-        { password: '123', createdAt: new Date('2019-01-01').toISOString() },
-        { password: 'Proper123!', createdAt: new Date('2019-01-30').toISOString() },
-      ],
-    });
+    (getUserData as jest.Mock).mockReturnValue(Promise.resolve(mockUserData));
+    (getUserItems as jest.Mock).mockReturnValue(Promise.resolve([
+      { password: '123', createdAt: new Date('2019-01-01').toISOString() },
+      { password: '123', createdAt: new Date('2019-01-01').toISOString() },
+      { password: 'Proper123!', createdAt: new Date('2019-01-30').toISOString() },
+    ]));
 
     await factory();
+    await waitUntilLoaded();
+
     const allTab = screen.getByText('All', { exact: false });
     const weakTab = screen.getByText('Weak', { exact: false });
     const reusedTab = screen.getByText('Reused', { exact: false });
