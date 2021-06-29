@@ -1,12 +1,11 @@
 import React, {
   ChangeEventHandler,
-  SyntheticEvent,
+  FormEventHandler,
   useCallback,
   useState,
 } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import Button from './components/Button';
 import ErrorBlock from '../ErrorBlock';
 import LoadingScreen from '../LoadingScreen';
 
@@ -25,7 +24,7 @@ const Login: React.FC = () => {
   const handleUsernameChange = useCallback<ChangeEventHandler<HTMLInputElement>>(event => setUsername(event.target.value), []);
   const handlePasswordChange = useCallback<ChangeEventHandler<HTMLInputElement>>(event => setPassword(event.target.value), []);
 
-  const handleSubmit = async (event: SyntheticEvent<HTMLFormElement>): Promise<void> => {
+  const handleSubmit = useCallback<FormEventHandler<HTMLFormElement>>(async (event): Promise<void> => {
     event.preventDefault();
     setIsLoading(true);
     setErrorMessage(null);
@@ -36,8 +35,9 @@ const Login: React.FC = () => {
       push(Routes.PasswordHealth);
     } catch (error) {
       setErrorMessage(error.message);
+      setIsLoading(false);
     }
-  };
+  }, [username, password]);
 
   return (
     <div className="login-page">
@@ -58,7 +58,12 @@ const Login: React.FC = () => {
           type="password"
           className="input mt-24px" />
         <ErrorBlock error={errorMessage}/>
-        <Button disabled={isLoading}>Login</Button>
+        <button
+          type="submit"
+          className="button mt-24px"
+          disabled={isLoading}>
+          Login
+        </button>
         {isLoading ? <LoadingScreen /> : null}
       </form>
     </div>
