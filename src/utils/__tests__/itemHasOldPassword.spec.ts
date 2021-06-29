@@ -9,9 +9,9 @@ const itemBase = {
 
 test.each`
   createDate      | now             | passwordIsOld | description
-  ${'2019-01-01'} | ${'2019-02-01'} | ${true}       | ${'false because password is 31 days old'}
-  ${'2019-01-01'} | ${'2019-01-31'} | ${false}      | ${'true because password is 30 days old'}
-  ${'2019-01-01'} | ${'2019-01-30'} | ${false}      | ${'true because password is 29 days old'}
+  ${'2019-01-01'} | ${'2019-02-01'} | ${true}       | ${'true because password is 31 days old'}
+  ${'2019-01-01'} | ${'2019-01-31'} | ${false}      | ${'false because password is 30 days old'}
+  ${'2019-01-01'} | ${'2019-01-30'} | ${false}      | ${'false because password is 29 days old'}
 `('returns $description', ({ createDate, now, passwordIsOld }) => {
   jest
     .spyOn(global.Date, 'now')
