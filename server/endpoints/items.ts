@@ -1,4 +1,4 @@
-import {Router} from 'express';
+import { Router } from 'express';
 import authentication from '../middleware/authentication';
 import { getItems, updateItem } from '../services/itemManager';
 
@@ -24,7 +24,7 @@ router.post('/api/items', authentication, (req, res) => {
     description,
     password,
     createdAt: new Date().toDateString(),
-  })
+  });
 
   res.status(200).send();
 });

@@ -6,8 +6,8 @@ import { addToken, removeToken, getTokenOwner, generateToken } from '../services
 const router = Router();
 
 // if password and email is correct returns new token
-router.get('/api/login',timeout, (req, res) => {
-  const {username, password} = req.query;
+router.post('/api/login',timeout, (req, res) => {
+  const { username, password } = req.body;
 
   const user = users.find((user) => (
     user.username === username &&
@@ -23,7 +23,7 @@ router.get('/api/login',timeout, (req, res) => {
       id: user.id,
       email: user.email,
       token,
-    })
+    });
 
     return;
   }
@@ -32,7 +32,7 @@ router.get('/api/login',timeout, (req, res) => {
 });
 
 // deletes token
-router.get('/api/logout', (req, res) => {
+router.post('/api/logout', (req, res) => {
   const token = req.headers.authorization?.split(' ')?.[1];
 
   if (token) {

@@ -1,15 +1,15 @@
-import {BrowserRouter as Router, Redirect, Switch} from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Redirect, Switch } from 'react-router-dom';
 
 import Login from './components/Login/Login';
 import PasswordHealth from './components/PasswordHealth/PasswordHealth';
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
-import {Routes} from './constants';
-import { UserContextProvider } from './components/UserContext';
+import { Routes } from './constants';
 
 import './style/styles.scss';
 
-const App = () => (
+const App = (): JSX.Element => (
   <Router>
     <Switch>
       <PublicRoute
@@ -18,7 +18,7 @@ const App = () => (
       />
       <PrivateRoute
         path={Routes.PasswordHealth}
-        component={() => <UserContextProvider><PasswordHealth /></UserContextProvider>}
+        component={PasswordHealth}
       />
       <PrivateRoute
         path={Routes.Root}

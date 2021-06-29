@@ -1,11 +1,9 @@
-import {IItem} from "~/services/getUserItems";
+import { Item } from '~/types';
+import getRepeatValues from './getRepeatValues';
 
-const itemHasReusedPassword = (item: IItem, itemList: Array<IItem>) => {
-  const reusedItems = itemList.filter((listItem) => (
-    listItem.password === item.password
-  ))
-
-  return reusedItems.length > 1;
+const itemHasReusedPassword = (item: Item, itemList: Array<Item>): boolean => {
+  const repeatedPasswords = getRepeatValues(itemList, item => item.password);
+  return repeatedPasswords.has(item.password);
 };
 
 export default itemHasReusedPassword;

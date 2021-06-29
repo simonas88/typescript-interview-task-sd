@@ -1,26 +1,41 @@
-import {SyntheticEvent, useState} from 'react';
-import {useHistory} from 'react-router-dom';
-import {Routes} from '~/constants';
-import login from '~/services/login';
+import React, {
+  ChangeEventHandler,
+  SyntheticEvent,
+  useCallback,
+  useState,
+} from 'react';
+import { useHistory } from 'react-router-dom';
+
 import ErrorBlock from '../ErrorBlock';
+import LoadingScreen from '../LoadingScreen';
+
+import { Routes } from '~/constants';
+import { login } from '~/services/authentication';
 
 import './login-style.scss';
 
-const Login = () => {
-  const {push} = useHistory();
+const Login: React.FC = () => {
+  const { push } = useHistory();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>();
 
-  const handleSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
+  const handleUsernameChange = useCallback<ChangeEventHandler<HTMLInputElement>>(event => setUsername(event.target.value), []);
+  const handlePasswordChange = useCallback<ChangeEventHandler<HTMLInputElement>>(event => setPassword(event.target.value), []);
+
+  const handleSubmit = async (event: SyntheticEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
+    setIsLoading(true);
     setErrorMessage(null);
 
     try {
       await login(username, password);
+      setIsLoading(false);
       push(Routes.PasswordHealth);
     } catch (error) {
       setErrorMessage(error.message);
+      setIsLoading(false);
     }
   };
 
@@ -32,25 +47,27 @@ const Login = () => {
         </h1>
         <input
           value={username}
-          onChange={(event) => setUsername(event.target.value)}
+          onChange={handleUsernameChange}
           placeholder="Username"
           type="text"
-          className="input mt-52px"
-        />
+          className="input mt-52px" />
         <input
           value={password}
-          onChange={(event) => setPassword(event.target.value)}
+          onChange={handlePasswordChange}
           placeholder="Password"
           type="password"
-          className="input mt-24px"
-        />
+          className="input mt-24px" />
         <ErrorBlock error={errorMessage}/>
-        <button type="submit" className="button mt-24px">
+        <button
+          type="submit"
+          className="button mt-24px"
+          disabled={isLoading}>
           Login
         </button>
+        {isLoading ? <LoadingScreen /> : null}
       </form>
     </div>
-  )
+  );
 };
 
 export default Login;

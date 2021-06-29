@@ -1,11 +1,15 @@
-import qs from 'query-string';
 import { API } from '../constants';
 
-const getUrl = (endpoint: API, params?: Record<string, any>) => {
+type GetUrl = (endpoint: API, params?: Record<string, string | number>) => string
 
-  const query = qs.stringify(params);
+const getUrl: GetUrl = (endpoint, params = {}) => {
+  const url = new URL(`${process.env.API_URL}/${endpoint}`);
 
-  return `${process.env.API_URL}/${endpoint}${query ? `?${query}` : ''}`
+  Object
+    .keys(params)
+    .forEach(key => url.searchParams.append(key, params[key] + ''));
+
+  return url.toString();
 };
 
 export default getUrl;

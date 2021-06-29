@@ -1,6 +1,14 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import { API } from '~/constants';
-import getUrl from '~/utils/getUrl';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import getUserData from '~/services/getUserData';
+
+type UserContextProviderProps = {
+  children: JSX.Element
+}
 
 interface IUser {
   updateUser: () => void;
@@ -13,8 +21,8 @@ interface IUser {
 }
 
 const UserContext = createContext<IUser>({
-  updateUser: () => {},
-  deleteData: () => {},
+  updateUser: () => void {},
+  deleteData: () => void {},
   errorMessage: null,
   isLoading: true,
   username: null,
@@ -22,27 +30,21 @@ const UserContext = createContext<IUser>({
   id: null,
 });
 
-export const useUserContext = () => useContext(UserContext);
+export const useUserContext = (): IUser => useContext(UserContext);
 
-export const UserContextProvider = ({ children }) => {
+export const UserContextProvider = ({ children }: UserContextProviderProps): JSX.Element => {
   const [errorMessage, setErrorMessage] = useState<string>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [username, setUsername] = useState<string>(null);
   const [email, setEmail] = useState<string>(null);
   const [id, setId] = useState<string>(null);
 
-  const updateUser = async () => {
+  const updateUser = async (): Promise<void> => {
     setErrorMessage(null);
     setIsLoading(true);
 
     try {
-      const response = await fetch(getUrl(API.User), {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        }
-      });
-
-      const data = await response.json();
+      const data = await getUserData();
 
       setUsername(data?.username);
       setEmail(data?.email);
@@ -52,9 +54,9 @@ export const UserContextProvider = ({ children }) => {
     }
 
     setIsLoading(false);
-  }
+  };
 
-  const deleteData = () => {
+  const deleteData = (): void => {
     setErrorMessage(null);
     setIsLoading(false);
     setUsername(null);
@@ -63,7 +65,7 @@ export const UserContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-   updateUser();
+    updateUser();
   }, []);
 
   const value = {
@@ -80,7 +82,7 @@ export const UserContextProvider = ({ children }) => {
     <UserContext.Provider value={value}>
       {children}
     </UserContext.Provider>
-  )
-}
+  );
+};
 
 export default UserContext;

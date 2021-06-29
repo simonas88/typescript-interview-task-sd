@@ -16,6 +16,10 @@
     margin-left: 12px;
     border-radius: 9px;
 
+    &--active {
+      background-color: $teal;
+    }
+
     &:hover {
       background-color: $grey;
     }

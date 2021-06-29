@@ -1,10 +1,10 @@
-import {FC, memo} from 'react';
+import React, { FC, memo } from 'react';
 
 interface IErrorBlock {
-  error: String
+  error: string
 }
 
-const ErrorBlock: FC<IErrorBlock> = ({error}) => {
+const ErrorBlock: FC<IErrorBlock> = ({ error }) => {
   if (!error) {
     return null;
   }
@@ -13,7 +13,7 @@ const ErrorBlock: FC<IErrorBlock> = ({error}) => {
     <div>
       {error}
     </div>
-  )
-}
+  );
+};
 
 export default memo(ErrorBlock);
