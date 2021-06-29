@@ -4,6 +4,8 @@ import { Route, Switch, useHistory } from 'react-router-dom';
 import List from './components/List/List';
 import Filter from './components/Filter/Filter';
 import Header from './components/Header/Header';
+import PasswordChangeModal from './components/PasswordChangeModal/PasswordChangeModal';
+import usePasswordChangeModal from './components/PasswordChangeModal/useModal';
 import ErrorBlock from '../ErrorBlock';
 import LoadingScreen from '../LoadingScreen';
 import useItemsProvider from './userItemsProvider';
@@ -16,6 +18,8 @@ import itemHasOldPassword from '~/utils/itemHasOldPassword';
 import getRepeatValues from '~/utils/getRepeatValues';
 
 const PasswordHealth: React.FC = () => {
+  const [selectedItem, openModal, closeModal] = usePasswordChangeModal(null);
+  
   const {
     errorMessage: userProviderErrorMessage,
     isLoading: userDataIsLoading,
@@ -64,18 +68,22 @@ const PasswordHealth: React.FC = () => {
         weakItems={weakPasswords.length}
         reusedItems={reusedPasswords.length}
         oldItems={oldPasswords.length} />
+      <PasswordChangeModal
+        item={selectedItem}
+        onChange={updateItem}
+        onClose={closeModal} />
       <Switch>
         <Route exact path={Routes.PasswordHealth}>
-          <List items={items} onUpdate={updateItem} />
+          <List items={items} onUpdate={openModal} />
         </Route>
         <Route path={Routes.Weak}>
-          <List items={weakPasswords} onUpdate={updateItem} />
+          <List items={weakPasswords} onUpdate={openModal} />
         </Route>
         <Route path={Routes.Reused}>
-          <List items={reusedPasswords} onUpdate={updateItem} />
+          <List items={reusedPasswords} onUpdate={openModal} />
         </Route>
         <Route path={Routes.Old}>
-          <List items={oldPasswords} onUpdate={updateItem} />
+          <List items={oldPasswords} onUpdate={openModal} />
         </Route>
       </Switch>
     </div>

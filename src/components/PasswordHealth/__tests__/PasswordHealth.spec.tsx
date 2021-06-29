@@ -17,7 +17,10 @@ jest.mock('~/services/getUserData', () => ({
   default: jest.fn(),
 }));
 
-jest.mock('../../Modal', jest.fn());
+jest.mock('../../Modal', () => ({
+  __esModule: true,
+  default: () => <></>, // eslint-disable-line react/display-name
+}));
 
 const factory = async (): Promise<RenderResult> => {
   let wrapper;
