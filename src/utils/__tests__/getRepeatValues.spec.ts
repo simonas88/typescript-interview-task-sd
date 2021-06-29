@@ -4,11 +4,11 @@ describe('getRepeatValues', () => {
   test('returns repeating values', () => {
     const input = [
       { key: 'one' },
-      { key: 'one' },
-      { key: 'one' },
       { key: 'two' },
+      { key: 'one' },
       { key: 'two' },
       { key: 'three' },
+      { key: 'one' },
     ];
 
     const result = getRepeatValues(input, item => item.key);
