@@ -21,8 +21,7 @@ const Filter: React.FC<IFilter> = ({
   oldItems,
 }) => {
   const { push } = useHistory();
-  const currentRoute = useLocation();
-  const isActiveRoute = useCallback((route: Routes) => currentRoute.pathname === route, [currentRoute]);
+  const { pathname } = useLocation();
   const openAll = useCallback(() => push(Routes.PasswordHealth), []);
   const openWeak = useCallback(() => push(Routes.Weak), []);
   const openReused = useCallback(() => push(Routes.Reused), []);
@@ -33,22 +32,22 @@ const Filter: React.FC<IFilter> = ({
       <FilterTab
         title="All"
         count={allItems}
-        active={isActiveRoute(Routes.PasswordHealth)}
+        active={pathname === Routes.PasswordHealth}
         onClick={openAll} />
       <FilterTab
         title="Weak"
         count={weakItems}
-        active={isActiveRoute(Routes.Weak)}
+        active={pathname === Routes.Weak}
         onClick={openWeak} />
       <FilterTab
         title="Reused"
         count={reusedItems}
-        active={isActiveRoute(Routes.Reused)}
+        active={pathname === Routes.Reused}
         onClick={openReused} />
       <FilterTab
         title="Old"
         count={oldItems}
-        active={isActiveRoute(Routes.Old)}
+        active={pathname === Routes.Old}
         onClick={openOld} />
     </div>
   );

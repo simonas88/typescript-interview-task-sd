@@ -9,13 +9,11 @@ type PasswordChangeModalProps = {
   onClose: () => void;
 }
 
-const PasswordChangeModal: React.FC<PasswordChangeModalProps> = (props) => {
-  const {
-    item,
-    onChange,
-    onClose,
-  } = props;
-
+const PasswordChangeModal: React.FC<PasswordChangeModalProps> = ({
+  item,
+  onChange,
+  onClose,
+}) => {
   const handlePasswordUpdate = (password: string): void => {
     onChange({ ...item, password });
     onClose();

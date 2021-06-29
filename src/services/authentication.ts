@@ -12,8 +12,8 @@ export const login = async (username: string, password: string): Promise<void> =
     method: 'POST',
     body: JSON.stringify({ username, password }),
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+    },
   });
 
   if (response.status === 401) {

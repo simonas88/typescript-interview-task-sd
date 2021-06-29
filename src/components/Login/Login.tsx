@@ -1,6 +1,6 @@
 import React, {
   ChangeEventHandler,
-  FormEventHandler,
+  SyntheticEvent,
   useCallback,
   useState,
 } from 'react';
@@ -24,7 +24,7 @@ const Login: React.FC = () => {
   const handleUsernameChange = useCallback<ChangeEventHandler<HTMLInputElement>>(event => setUsername(event.target.value), []);
   const handlePasswordChange = useCallback<ChangeEventHandler<HTMLInputElement>>(event => setPassword(event.target.value), []);
 
-  const handleSubmit = useCallback<FormEventHandler<HTMLFormElement>>(async (event): Promise<void> => {
+  const handleSubmit = async (event: SyntheticEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     setIsLoading(true);
     setErrorMessage(null);
@@ -37,7 +37,7 @@ const Login: React.FC = () => {
       setErrorMessage(error.message);
       setIsLoading(false);
     }
-  }, [username, password]);
+  };
 
   return (
     <div className="login-page">
